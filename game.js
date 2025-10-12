@@ -1440,7 +1440,9 @@ this.air = 0;
 this.jump = 0;
 setTimeout(function(){
 alert(window.screen.width);
-alert(window.innerWidth)
+alert(window.innerWidth);
+alert(window.screen.height);
+alert(window.innerHeight);
 },2000)
 }
 };
