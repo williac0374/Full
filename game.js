@@ -1394,7 +1394,7 @@ this.on_creation = on_creation_i;
 this.on_destroy = on_destroy_i;
 this.on_step = function() {
 with(this) {
-if(mouse_check_released()){
+if(mouse_check_released){
 alert(window.screen.width);
 alert(window.innerWidth);
 alert(window.screen.height);
@@ -1443,3 +1443,4 @@ tu_room_to_go = scene_2;
 
 tu_gameloop = tu_loop;
 tu_loop();
+
