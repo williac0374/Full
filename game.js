@@ -1388,6 +1388,29 @@ __background_init__(this, background_4, 'img/FULL.png')}; var background_4 = new
 /***********************************************************************
  * OBJECTS
  ***********************************************************************/
+function __object_control() {
+__instance_init__(this, object_control, null, 1, 0, null, 1, 0);
+this.on_creation = on_creation_i;
+this.on_destroy = on_destroy_i;
+this.on_step = function() {
+with(this) {
+if(mouse_check_released()){
+alert(window.screen.width);
+alert(window.innerWidth);
+alert(window.screen.height);
+alert(window.innerHeight);
+
+}
+}
+};
+this.on_end_step = on_end_step_i;
+this.on_collision = on_collision_i;
+this.on_roomstart = on_roomstart_i;
+this.on_roomend = on_roomend_i;
+this.on_animationend = on_animationend_i;
+this.on_draw = on_draw_i;
+}; var object_control = new __object_control();
+
 
 
 /***********************************************************************
@@ -1397,7 +1420,7 @@ function __scene_2() {
 this.tiles = [
 ];
 this.objects = [
-];
+[{o:object_control, x:40, y:40}]];
 this.start = function() {
 __room_start__(this, scene_2, 320, 712, 30, 0, 0, 0, background_4.image, 0, 0, 0, 320, 712, null, 50, 50);
 };
