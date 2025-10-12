@@ -1412,7 +1412,7 @@ this.tiles = [
 this.objects = [
 [{o:object_control, x:40, y:40}]];
 this.start = function() {
-__room_start__(this, scene_2, 320, 670, 30, 0, 0, 0, background_4.image, 0, 0, 1, 320, 670, null, 50, 50);
+__room_start__(this, scene_2, 320, 680, 30, 0, 0, 0, background_4.image, 0, 0, 1, 320, 680, null, 50, 50);
 };
 }
 var scene_2 = new __scene_2();
