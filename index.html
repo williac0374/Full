@@ -3,25 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
-    <title>No Scroll/Zoom Fullscreen Page</title>
+    <title>No Scroll/Zoom Fullscreen Page (JS Enhanced)</title>
 
     <style>
-        /* 2. Basic Reset and Full Viewport Setup */
+        /* CSS to disable scrolling and set fullscreen */
         html, body {
             margin: 0;
             padding: 0;
-            /* Set the height to 100% of the viewport height (vh) */
             height: 100vh;
-            /* Set the width to 100% of the viewport width (vw) */
             width: 100vw;
-            /* Prevent scrolling by hiding any overflow content */
-            /* 'hidden' is the key to preventing scrolling on the main body */
+            /* Prevents scrolling */
             overflow: hidden;
-            /* Make sure the box model includes padding/border in the set dimensions */
             box-sizing: border-box;
-            /* Optional: Set a background color to clearly see the full screen */
             background-color: #f0f0f0;
-            /* Optional: Make the content centered/visible */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -29,27 +23,42 @@
             text-align: center;
         }
 
-        /* 3. Content Styling (Optional but helpful) */
         .content {
             padding: 20px;
             max-width: 90%;
-        }
-
-        /* 4. Optional: CSS to attempt to prevent text selection/tap-and-hold menus on some mobile browsers */
-        body {
-            -webkit-user-select: none;  /* Safari/Chrome */
-            -moz-user-select: none;     /* Firefox */
-            -ms-user-select: none;      /* IE/Edge */
-            user-select: none;
-            /* -webkit-touch-callout: none; /* iOS Safari tap-and-hold menu */
         }
     </style>
 </head>
 <body>
     <div class="content">
-        <h1>Fullscreen Experience</h1>
-        <p>This page is designed to fill the screen on mobile devices.</p>
-        <p>Scrolling and pinch-zooming should be disabled.</p>
+        <h1>Zoom Prevention Enhanced</h1>
+        <p>This page now includes **JavaScript** to specifically block the touch events that trigger zooming on Android Chrome.</p>
+        <p>If scrolling is still an issue, ensure your content fits entirely on the screen.</p>
     </div>
+
+    <script>
+        /* * 2. JavaScript Solution: Intercepts 'touchmove' events to block the pinch-zoom gesture.
+         * This is often the most reliable method for recent versions of Chrome on Android.
+         */
+        
+        document.addEventListener('touchmove', function(event) {
+            // Check if there are more than one touch points (a pinch gesture)
+            if (event.touches.length > 1) {
+                // Prevent the default browser behavior (which includes zooming)
+                event.preventDefault();
+            }
+        }, { passive: false }); // Use { passive: false } to ensure event.preventDefault() works
+
+        // Optional: To block double-tap to zoom, though less common now:
+        var lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            var now = (new Date()).getTime();
+            // Check for double tap (two touchend events close together)
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
 </body>
 </html>
