@@ -1438,6 +1438,10 @@ this.on_creation = function() {
 with(this) {
 this.air = 0;
 this.jump = 0;
+setTimeout(function(){
+alert(window.screen.width);
+alert(window.innerWidth)
+},2000)
 }
 };
 this.on_destroy = on_destroy_i;
