@@ -64,6 +64,9 @@ document.addEventListener('touchmove', function(event) {
   var protien = 199
   var fat = 200
   var carbs = 600
+var left= {x:0, y:600, w:120, h:75};
+var center= {x:120, y:600, w:80, h:75};
+var right= {x:200, y:600, w:120, h:75};
   function start(){
     
   }
@@ -77,6 +80,18 @@ document.addEventListener('touchmove', function(event) {
     }
     if(mouse_check_pressed()){
       ranStats()
+      checkGui()
+    }
+  }
+  function checkGui(){
+    if(inside(mouse_x, mouse_y, left.x, left.y, left.w, left.h, 0, 0, 0)){
+      alert('left')
+    }
+    if(inside(mouse_x, mouse_y, center.x, center.y, center.w, center.h, 0, 0, 0)){
+      alert('center')
+    }
+    if(inside(mouse_x, mouse_y, right.x, right.y, right.w, right.h, 0, 0, 0)){
+      alert('right')
     }
   }
   function ranStats(){
@@ -91,7 +106,23 @@ document.addEventListener('touchmove', function(event) {
     draw_gauge(protien,200,12,64)
     draw_gauge(fat,400,12,112)
     draw_gauge(carbs,600,12,160)
+    draw_buttons()
   }
+  function draw_buttons(){
+    //draw_rectangle(x, y, w, h,outline,rot,ox,oy)
+    draw_set_color(128,128,128)
+    draw_rectangle(left.x, left.y, left.w, left.h, 0, 0, 0, 0)
+    draw_rectangle(center.x, center.y, center.w, center.h, 0, 0, 0, 0)
+    draw_rectangle(right.x, right.y, right.w, right.h, 0, 0, 0, 0)
+    draw_set_color(0,0,0)
+    draw_set_linewidth(4)
+    draw_rectangle(left.x, left.y, left.w, left.h, 1, 0, 0, 0)
+    draw_rectangle(center.x, center.y, center.w, center.h, 1, 0, 0, 0)
+    draw_rectangle(right.x, right.y, right.w, right.h, 1, 0, 0, 0)
+    draw_rectangle(0, 0, 320, 675,1,0,0,0)
+    
+  }
+  
   function draw_gauge(val,max,ox,oy){
     let bVal = max/16;
     let bars = floor(val/bVal)
