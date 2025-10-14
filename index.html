@@ -78,9 +78,10 @@ var right= {x:200, y:600, w:120, h:75};
       kcal-=20;
     if(kcal<0){kcal=0}
     }
-    if(mouse_check_pressed()){
+    if(mouse_down){
       ranStats()
       checkGui()
+      mouse_down=false;
     }
   }
   function checkGui(){
@@ -106,9 +107,9 @@ var right= {x:200, y:600, w:120, h:75};
     draw_gauge(protien,200,12,64)
     draw_gauge(fat,400,12,112)
     draw_gauge(carbs,600,12,160)
-    draw_buttons()
+    draw_Gui()
   }
-  function draw_buttons(){
+  function draw_Gui(){
     //draw_rectangle(x, y, w, h,outline,rot,ox,oy)
     draw_set_color(128,128,128)
     draw_rectangle(left.x, left.y, left.w, left.h, 0, 0, 0, 0)
@@ -121,6 +122,10 @@ var right= {x:200, y:600, w:120, h:75};
     draw_rectangle(right.x, right.y, right.w, right.h, 1, 0, 0, 0)
     draw_rectangle(0, 0, 320, 675,1,0,0,0)
     
+    //draw_centered_text(x, y, text, size, weight) 
+    draw_centered_text(left.x+left.w/2, left.y+left.h/2, "left", 20, 700) 
+    draw_centered_text(center.x+center.w/2, center.y+center.h/2, "ADD", 20, 700) 
+    draw_centered_text(right.x+right.w/2, right.y+right.h/2, "right", 20, 700) 
   }
   
   function draw_gauge(val,max,ox,oy){
