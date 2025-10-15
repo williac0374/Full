@@ -35,6 +35,7 @@ canvas {
 </style>
 </head>
 <body>
+<input type="text" style="display: none" id="myInput">
 <canvas id="canvas" width="320" height="675"></canvas>
 
 <script>
@@ -158,8 +159,16 @@ var right= {x:200, y:600, w:120, h:75};
     draw_centered_text(160, 380, foods[currentFood].cholesterol+":cholesterol", 20, 700)
     draw_centered_text(160, 400, foods[currentFood].fiber+":fiber", 20, 700)
   }
+
   function addFood(){
-    let description = prompt("enter food description","")
+    
+    const inputElement = document.getElementById('myInput');
+    inputElement.addEventListener('input', function() {
+  // The current value of the input field
+  alert(this.value);
+});
+    inputElement.focus();
+    //let description = prompt("enter food description","")
     if(description=='delete'){
       if(foods.length>1){
         foods.splice(currentFood, 1);
@@ -222,5 +231,6 @@ var right= {x:200, y:600, w:120, h:75};
   <script type='text/javascript' src='engine.js'></script>
   </body>
   </html>
+  
   
   
