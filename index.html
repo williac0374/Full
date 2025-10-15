@@ -74,16 +74,16 @@ document.addEventListener('touchmove', function(event) {
 var left= {x:0, y:600, w:120, h:75};
 var center= {x:120, y:600, w:80, h:75};
 var right= {x:200, y:600, w:120, h:75};
-//foods
-var foods = []
-var currentFood=0
-if(localStorage.getItem("full_menu")!=null){
-  foods = JSON.parse(localStorage.getItem("full_menu"))
-}else{
-let food = {description:"apple",kcal:120,protein:1,cholesterol:0,fiber:10}
-foods.push(food)
-localStorage.setItem("full_menu", JSON.stringify(foods));
-}
+  //foods
+  var foods = []
+  var currentFood=0
+  if(localStorage.getItem("full_menu")!=null){
+    foods = JSON.parse(localStorage.getItem("full_menu"))
+  }else{
+  let food = {description:"apple",kcal:120,protein:1,cholesterol:0,fiber:10}
+    foods.push(food)
+    localStorage.setItem("full_menu", JSON.stringify(foods));
+  }
   function start(){
     
   }
@@ -112,14 +112,16 @@ localStorage.setItem("full_menu", JSON.stringify(foods));
       addFood()
     }
     if(inside(mouse_x, mouse_y, right.x, right.y, right.w, right.h, 0, 0, 0)){
-            if(currentFood<foods.length-1){
+      if(currentFood<foods.length-1){
         currentFood++
       }else{
         currentFood=0
       }
     }
   }
-  
+  function guiLogic(input){
+    
+  }
   function draw(){
     draw_Gui()
   }
@@ -144,8 +146,8 @@ localStorage.setItem("full_menu", JSON.stringify(foods));
     draw_centered_text(left.x+left.w/2, left.y+left.h/2, "left", 20, 700)
     draw_centered_text(center.x+center.w/2, center.y+center.h/2, "ADD", 20, 700)
     draw_centered_text(right.x+right.w/2, right.y+right.h/2, "right", 20, 700)
-
-     draw_centered_text(160, 40, kcal+" / "+KCALS, 30, 700)
+    
+    draw_centered_text(160, 40, kcal+" / "+KCALS, 30, 700)
     draw_centered_text(160, 80, protien+" / "+PROTEIN, 30, 700)
     draw_centered_text(160, 120, cholesterol+" / "+CHOLESTEROL, 30, 700)
     draw_centered_text(160, 160, fiber+" / "+FIBER, 30, 700)
@@ -158,18 +160,67 @@ localStorage.setItem("full_menu", JSON.stringify(foods));
   }
   function addFood(){
     let description = prompt("enter food description","")
+    if(description=='delete'){
+      if(foods.length>1){
+        foods.splice(currentFood, 1);
+      }
+      localStorage.setItem("full_menu", JSON.stringify(foods));
+      return
+    }
+    if(description=='reset'){
+      foods = []
+      currentFood=0
+    let food = {description:"apple",kcal:120,protein:1,cholesterol:0,fiber:10}
+      foods.push(food)
+      localStorage.setItem("full_menu", JSON.stringify(foods));
+      return;
+    }
+    
+    if(description=='export'){
+      menuExport(JSON.stringify(foods))
+      return;
+    }
     let kcal = prompt("enter food kcal","")
     let protein = prompt("enter food protein","")
     let cholesterol = prompt("enter food cholesterol","")
     let fiber = prompt("enter food fiber","")
-    let food = {description:description,kcal:kcal,protein:protein,cholesterol:cholesterol,fiber:fiber}
+    
+  let food = {description:description,kcal:kcal,protein:protein,cholesterol:cholesterol,fiber:fiber}
     foods.push(food)
     localStorage.setItem("full_menu", JSON.stringify(foods));
     alert("new food added!!")
   }
-  
+  /**
+  * Triggers a file download containing the specified string content.
+* @param {string} content - The string content to be written to the file.
+* @param {string} [filename='download.txt'] - The desired filename for the downloaded file.
+  */
+  function menuExport(content, filename = 'download.txt') {
+    // 1. Create a Blob (Binary Large Object) from the string content.
+    // The type 'text/plain' ensures it's treated as a plain text file.
+  const blob = new Blob([content], { type: 'text/plain' });
+    
+    // 2. Create a temporary URL for the Blob object.
+    const url = URL.createObjectURL(blob);
+    
+    // 3. Create a temporary anchor (<a>) element to simulate a download link.
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename; // Set the desired filename
+    
+    // 4. Append the link to the document body (required for Firefox)
+    // and then programmatically "click" it to start the download.
+    document.body.appendChild(a);
+    a.click();
+    
+    // 5. Clean up by removing the temporary link and revoking the object URL.
+    // This frees up memory and resources.
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
   </script>
   <script type='text/javascript' src='engine.js'></script>
   </body>
   </html>
+  
   
