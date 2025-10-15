@@ -5,7 +5,7 @@
 <meta name='apple-mobile-web-app-capable' content='yes' />
 <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, user-scalable=0, width=device-width, height=device-height' />
 <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent' />
-<title>No Scroll/Zoom Fullscreen Page (JS Enhanced + webapp)</title>
+<title>FULL</title>
 <link rel="canonical" href="https://williac0374.github.io/Full/" />
 <link rel="manifest" href="/Full/manifest.webmanifest">
 <style>
@@ -60,13 +60,30 @@ document.addEventListener('touchmove', function(event) {
     }
     lastTouchEnd = now;
   }, false);
+  //-----------------------------
+  //TARGET MACROS
+  var KCALS = 2400
+  var PROTEIN = 200
+  var CHOLESTEROL = 300
+  var FIBER = 30
+  //----------------------------
   var kcal=1500
   var protien = 199
-  var fat = 200
-  var carbs = 600
+  var cholesterol = 125
+  var fiber = 15
 var left= {x:0, y:600, w:120, h:75};
 var center= {x:120, y:600, w:80, h:75};
 var right= {x:200, y:600, w:120, h:75};
+//foods
+var foods = []
+var currentFood=0
+if(localStorage.getItem("full_menu")!=null){
+  foods = JSON.parse(localStorage.getItem("full_menu"))
+}else{
+let food = {description:"apple",kcal:120,protein:1,cholesterol:0,fiber:10}
+foods.push(food)
+localStorage.setItem("full_menu", JSON.stringify(foods));
+}
   function start(){
     
   }
@@ -79,99 +96,80 @@ var right= {x:200, y:600, w:120, h:75};
     if(kcal<0){kcal=0}
     }
     if(mouse_down){
-      ranStats()
       checkGui()
       mouse_down=false;
     }
   }
   function checkGui(){
     if(inside(mouse_x, mouse_y, left.x, left.y, left.w, left.h, 0, 0, 0)){
-      alert('left')
+      if(currentFood>0){
+        currentFood--
+      }else{
+        currentFood=foods.length-1
+      }
     }
     if(inside(mouse_x, mouse_y, center.x, center.y, center.w, center.h, 0, 0, 0)){
-      alert('center')
+      addFood()
     }
     if(inside(mouse_x, mouse_y, right.x, right.y, right.w, right.h, 0, 0, 0)){
-      alert('right')
+            if(currentFood<foods.length-1){
+        currentFood++
+      }else{
+        currentFood=0
+      }
     }
   }
-  function ranStats(){
-    kcal = irandom(2000)
-    protien = irandom(200)
-    fat = irandom(400)
-    carbs = irandom(600)
-    
-  }
+  
   function draw(){
-    draw_gauge(kcal,2000,12,16)
-    draw_gauge(protien,200,12,64)
-    draw_gauge(fat,400,12,112)
-    draw_gauge(carbs,600,12,160)
     draw_Gui()
   }
   function draw_Gui(){
     //draw_rectangle(x, y, w, h,outline,rot,ox,oy)
+    //\draw button rectangles
     draw_set_color(128,128,128)
     draw_rectangle(left.x, left.y, left.w, left.h, 0, 0, 0, 0)
     draw_rectangle(center.x, center.y, center.w, center.h, 0, 0, 0, 0)
     draw_rectangle(right.x, right.y, right.w, right.h, 0, 0, 0, 0)
+    //draw button outline
     draw_set_color(0,0,0)
     draw_set_linewidth(4)
     draw_rectangle(left.x, left.y, left.w, left.h, 1, 0, 0, 0)
     draw_rectangle(center.x, center.y, center.w, center.h, 1, 0, 0, 0)
     draw_rectangle(right.x, right.y, right.w, right.h, 1, 0, 0, 0)
+    //draw border rectangle
+    draw_set_linewidth(12)
     draw_rectangle(0, 0, 320, 675,1,0,0,0)
+    //draw button text
+    //draw_centered_text(x, y, text, size, weight)
+    draw_centered_text(left.x+left.w/2, left.y+left.h/2, "left", 20, 700)
+    draw_centered_text(center.x+center.w/2, center.y+center.h/2, "ADD", 20, 700)
+    draw_centered_text(right.x+right.w/2, right.y+right.h/2, "right", 20, 700)
+
+     draw_centered_text(160, 40, kcal+" / "+KCALS, 30, 700)
+    draw_centered_text(160, 80, protien+" / "+PROTEIN, 30, 700)
+    draw_centered_text(160, 120, cholesterol+" / "+CHOLESTEROL, 30, 700)
+    draw_centered_text(160, 160, fiber+" / "+FIBER, 30, 700)
     
-    //draw_centered_text(x, y, text, size, weight) 
-    draw_centered_text(left.x+left.w/2, left.y+left.h/2, "left", 20, 700) 
-    draw_centered_text(center.x+center.w/2, center.y+center.h/2, "ADD", 20, 700) 
-    draw_centered_text(right.x+right.w/2, right.y+right.h/2, "right", 20, 700) 
+    draw_centered_text(160, 320, foods[currentFood].description, 20, 700)
+    draw_centered_text(160, 340, foods[currentFood].kcal+":kcal", 20, 700)
+    draw_centered_text(160, 360, foods[currentFood].protein+":protein", 20, 700)
+    draw_centered_text(160, 380, foods[currentFood].cholesterol+":cholesterol", 20, 700)
+    draw_centered_text(160, 400, foods[currentFood].fiber+":fiber", 20, 700)
+  }
+  function addFood(){
+    let description = prompt("enter food description","")
+    let kcal = prompt("enter food kcal","")
+    let protein = prompt("enter food protein","")
+    let cholesterol = prompt("enter food cholesterol","")
+    let fiber = prompt("enter food fiber","")
+    let food = {description:description,kcal:kcal,protein:protein,cholesterol:cholesterol,fiber:fiber}
+    foods.push(food)
+    localStorage.setItem("full_menu", JSON.stringify(foods));
+    alert("new food added!!")
   }
   
-  function draw_gauge(val,max,ox,oy){
-    let bVal = max/16;
-    let bars = floor(val/bVal)
-    for(let i=0;i<bars;i++){
-      if(val<=max){
-        if(i<6){
-          draw_green(20*i+ox,oy,16,32)
-        }else{
-          if(i<11){
-            draw_yellow(20*i+ox,oy,16,32)
-          }else{
-            draw_red(20*i+ox,oy,16,32)
-          }
-        }
-      }else{
-        if(i<15){
-          if(irandom(10)>7){
-            draw_grey(20*i+ox,oy,16,32);
-          }else{
-            draw_red(20*i+ox,oy,16,32);
-          }
-          
-        }
-      }
-    }
-    document.title=kcal+' - '+bars
-  }
-  function draw_red(x,y,w,h){
-    draw_set_color(255,0,0)
-    draw_rectangle(x, y, w, h,false,0,0,0)
-  }
-  function draw_green(x,y,w,h){
-    draw_set_color(0,255,0)
-    draw_rectangle(x, y, w, h,false,0,0,0)
-  }
-  function draw_yellow(x,y,w,h){
-    draw_set_color(255,255,0)
-    draw_rectangle(x, y, w, h,false,0,0,0)
-  }
-  function draw_grey(x,y,w,h){
-    draw_set_color(128,128,128)
-    draw_rectangle(x, y, w, h,false,0,0,0)
-  }
   </script>
   <script type='text/javascript' src='engine.js'></script>
   </body>
   </html>
+  
