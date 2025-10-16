@@ -35,7 +35,6 @@ canvas {
 </style>
 </head>
 <body>
-<input type="text" style="display: none" id="myInput">
 <canvas id="canvas" width="320" height="675"></canvas>
 
 <script>
@@ -75,6 +74,33 @@ document.addEventListener('touchmove', function(event) {
 var left= {x:0, y:600, w:120, h:75};
 var center= {x:120, y:600, w:80, h:75};
 var right= {x:200, y:600, w:120, h:75};
+var words=''
+  var kb=[]
+  var klist=['1','2','3','4','5','6','7','8','9','0','q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l',' ',' ','z','x','c','v','b','n','m','del','back','space','ok']
+      var size=32
+    var y = 675-160
+    var x=0
+    var vkey=null
+  for(let i = 0; i <klist.length;i++){
+
+    if(klist[i]!='del'&&klist[i]!='back'&&klist[i]!='space'&&klist[i]!='ok'){
+     vkey = {label:klist[i],x:x,y:y,w:size,h:size}
+      x+=size;
+    }else{
+      if(klist[i]!='del'&&klist[i]!='back'&&klist[i]!='ok'){
+       vkey = {label:klist[i],x:x,y:y,w:size*6,h:size}
+        x+=size*6;
+      }else{
+       vkey = {label:klist[i],x:x,y:y,w:size*2,h:size}
+        x+=size*2
+      }
+    }
+    if(x>=320){
+      x=0;
+      y+=size
+    }
+    kb.push(vkey)
+  }
   //foods
   var foods = []
   var currentFood=0
@@ -97,7 +123,8 @@ var right= {x:200, y:600, w:120, h:75};
     if(kcal<0){kcal=0}
     }
     if(mouse_down){
-      checkGui()
+      //checkGui()
+      check_vkeys()
       mouse_down=false;
     }
   }
@@ -125,7 +152,36 @@ var right= {x:200, y:600, w:120, h:75};
   }
   function draw(){
     draw_Gui()
+    draw_vkeys()
+    
+    
+    
   }
+function draw_vkeys(){
+  draw_set_color(59,59,59);
+  draw_rectangle(0, 675-160, 320, 160,0,0,0,0)
+  //{label:klist[i],x:x,y:y,w:size*2,h:size}
+  for(let i = 0; i < kb.length; i ++){
+    draw_set_color(80,80,80);
+    draw_set_linewidth(2)
+    draw_rectangle(kb[i].x, kb[i].y, kb[i].w, kb[i].h,1,0,0,0)
+    draw_set_color(200,200,200);
+    draw_centered_text(kb[i].x+kb[i].w/2, kb[i].y+16, kb[i].label, 20, 600) 
+  }
+  draw_set_color(0,0,0);
+  draw_rectangle(0, 675-224, 320, 64,1,0,0,0)
+  //words
+  draw_centered_text(160, 675-224+32, words, 48, 700) 
+}
+function check_vkeys(){
+  for(let i = 0;i<kb.length;i++){
+    if(inside(mouse_x, mouse_y, kb[i].x, kb[i].y, kb[i].w, kb[i].h, 0, 0, 0)){
+      if(kb[i].label!='space' && kb[i].label!='del' && kb[i].label!='ok' && kb[i].label!='back'){
+        words+=kb[i].label
+      }
+    }
+  }
+}
   function draw_Gui(){
     //draw_rectangle(x, y, w, h,outline,rot,ox,oy)
     //\draw button rectangles
@@ -152,23 +208,16 @@ var right= {x:200, y:600, w:120, h:75};
     draw_centered_text(160, 80, protien+" / "+PROTEIN, 30, 700)
     draw_centered_text(160, 120, cholesterol+" / "+CHOLESTEROL, 30, 700)
     draw_centered_text(160, 160, fiber+" / "+FIBER, 30, 700)
-    
+    /*
     draw_centered_text(160, 320, foods[currentFood].description, 20, 700)
     draw_centered_text(160, 340, foods[currentFood].kcal+":kcal", 20, 700)
     draw_centered_text(160, 360, foods[currentFood].protein+":protein", 20, 700)
     draw_centered_text(160, 380, foods[currentFood].cholesterol+":cholesterol", 20, 700)
     draw_centered_text(160, 400, foods[currentFood].fiber+":fiber", 20, 700)
+    */
   }
-
   function addFood(){
-    let description = "";
-    const inputElement = document.getElementById('myInput');
-    inputElement.addEventListener('input', function() {
-  // The current value of the input field
-  alert(this.value);
-});
-    inputElement.focus();
-    //let description = prompt("enter food description","")
+    let description = prompt("enter food description","")
     if(description=='delete'){
       if(foods.length>1){
         foods.splice(currentFood, 1);
