@@ -177,7 +177,7 @@ var right= {x:200, y:600, w:120, h:75};
     }
     draw_set_color(0,0,0);
     draw_set_linewidth(4)
-    draw_rectangle(0, 675-224*1.25, 320, 64,1,0,0,0)
+    //draw_rectangle(0, 675-224*1.25, 320, 64,1,0,0,0)
     //words
     draw_centered_text(160, 675-224*1.25+32, words, 48, 700)
   }
@@ -223,10 +223,22 @@ var right= {x:200, y:600, w:120, h:75};
       draw_centered_text(160, 160, fiber+" / "+FIBER, 30, 700)
     }
     if(mode=='input'){
-      draw_centered_text(160, 40, 'KCALS', 30, 700)
-      draw_centered_text(160, 80, 'PROTEIN', 30, 700)
-      draw_centered_text(160, 120, 'CHOLESTEROL', 30, 700)
-      draw_centered_text(160, 160, 'FIBER', 30, 700)
+      draw_set_linewidth(2)
+      draw_centered_text(160, 40, 'FOOD', 30, 700)
+      draw_centered_text(160, 80, foods[currentFood].description, 30, 700)
+      draw_rectangle(160, 80, foods[currentFood].description.length*30, 30,1,0,(foods[currentFood].description.length*30)/2,15)
+      draw_centered_text(160, 120, 'KCALS', 30, 700)
+      draw_centered_text(160, 160, foods[currentFood].kcal, 30, 700)
+      draw_rectangle(160, 160, foods[currentFood].kcal.toString().length*30, 30,1,0,(foods[currentFood].kcal.toString().length*30)/2,15)
+      draw_centered_text(160, 200, 'PROTEIN', 30, 700)
+      draw_centered_text(160, 240, foods[currentFood].protein, 30, 700)
+      draw_rectangle(160, 240, foods[currentFood].protein.toString().length*30, 30,1,0,(foods[currentFood].protein.toString().length*30)/2,15)
+      draw_centered_text(160, 280, 'CHOLESTEROL', 30, 700)
+      draw_centered_text(160, 320, foods[currentFood].cholesterol, 30, 700)
+      draw_rectangle(160, 320, foods[currentFood].cholesterol.toString().length*30, 30,1,0,(foods[currentFood].cholesterol.toString().length*30)/2,15)
+      draw_centered_text(160, 360, 'FIBER', 30, 700)
+      draw_centered_text(160, 400, foods[currentFood].fiber, 30, 700)
+      draw_rectangle(160, 400, foods[currentFood].fiber.toString().length*30, 30,1,0,(foods[currentFood].fiber.toString().length*30)/2,15)
     }
     /*
     draw_centered_text(160, 320, foods[currentFood].description, 20, 700)
