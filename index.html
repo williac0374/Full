@@ -78,26 +78,26 @@ var words=''
   var kb=[]
   var klist=['1','2','3','4','5','6','7','8','9','0','q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l',' ',' ','z','x','c','v','b','n','m','del','back','space','ok']
       var size=32
-    var y = 675-160
+    var y = 675-160*1.25
     var x=0
     var vkey=null
   for(let i = 0; i <klist.length;i++){
 
     if(klist[i]!='del'&&klist[i]!='back'&&klist[i]!='space'&&klist[i]!='ok'){
-     vkey = {label:klist[i],x:x,y:y,w:size,h:size}
+     vkey = {label:klist[i],x:x,y:y,w:size,h:size*1.25}
       x+=size;
     }else{
       if(klist[i]!='del'&&klist[i]!='back'&&klist[i]!='ok'){
-       vkey = {label:klist[i],x:x,y:y,w:size*6,h:size}
+       vkey = {label:klist[i],x:x,y:y,w:size*6,h:size*1.25}
         x+=size*6;
       }else{
-       vkey = {label:klist[i],x:x,y:y,w:size*2,h:size}
+       vkey = {label:klist[i],x:x,y:y,w:size*2,h:size*1.25}
         x+=size*2
       }
     }
     if(x>=320){
       x=0;
-      y+=size
+      y+=size*1.25
     }
     kb.push(vkey)
   }
@@ -159,25 +159,30 @@ var words=''
   }
 function draw_vkeys(){
   draw_set_color(59,59,59);
-  draw_rectangle(0, 675-160, 320, 160,0,0,0,0)
+  draw_rectangle(0, 675-160*1.25, 320, 160*1.25,0,0,0,0)
   //{label:klist[i],x:x,y:y,w:size*2,h:size}
   for(let i = 0; i < kb.length; i ++){
     draw_set_color(80,80,80);
     draw_set_linewidth(2)
     draw_rectangle(kb[i].x, kb[i].y, kb[i].w, kb[i].h,1,0,0,0)
     draw_set_color(200,200,200);
-    draw_centered_text(kb[i].x+kb[i].w/2, kb[i].y+16, kb[i].label, 20, 600) 
+    draw_centered_text(kb[i].x+kb[i].w/2, kb[i].y+kb[i].h/2, kb[i].label, 20, 600) 
   }
   draw_set_color(0,0,0);
-  draw_rectangle(0, 675-224, 320, 64,1,0,0,0)
+  draw_rectangle(0, 675-224*1.25, 320, 64,1,0,0,0)
   //words
-  draw_centered_text(160, 675-224+32, words, 48, 700) 
+  draw_centered_text(160, 675-224*1.25+32, words, 48, 700) 
 }
 function check_vkeys(){
   for(let i = 0;i<kb.length;i++){
     if(inside(mouse_x, mouse_y, kb[i].x, kb[i].y, kb[i].w, kb[i].h, 0, 0, 0)){
       if(kb[i].label!='space' && kb[i].label!='del' && kb[i].label!='ok' && kb[i].label!='back'){
         words+=kb[i].label
+        
+      }else{
+        if(kb[i].label=='space'){words+=' '}
+        if(kb[i].label=='del'){words = words.substring(0, words.length - 1);
+}
       }
     }
   }
