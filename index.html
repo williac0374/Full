@@ -117,7 +117,7 @@ var right= {x:200, y:600, w:120, h:75};
   if(localStorage.getItem("full_menu")!=null){
     foods = JSON.parse(localStorage.getItem("full_menu"))
   }else{
-  let food = {description:"apple",kcal:120,protein:1,cholesterol:0,fiber:10}
+  let food = {description:"apple",kcal:'120',protein:'1',cholesterol:'0',fiber:'10'}
     foods.push(food)
     localStorage.setItem("full_menu", JSON.stringify(foods));
   }
@@ -125,8 +125,11 @@ var right= {x:200, y:600, w:120, h:75};
     
   }
   function loop(){
-    if(keyboard_check(vk_a)){
-      addFood();
+    if(keyboard_check(vk_r)){
+      foods = [];
+    let food = {description:"apple",kcal:'120',protein:'1',cholesterol:'0',fiber:'10'}
+      foods.push(food)
+      localStorage.setItem("full_menu", JSON.stringify(foods));
     }
     if(mouse_down){
       if(mode!='input'){
@@ -157,49 +160,40 @@ var right= {x:200, y:600, w:120, h:75};
       }
     }
   }
+  function no_data(){
+    
+  if(foods[currentFood].description.length==0){foods[currentFood].description='food'}
+  if(foods[currentFood].kcal.length==0){foods[currentFood].kcal='0'}
+  if(foods[currentFood].protein.length==0){foods[currentFood].protein='0'}
+  if(foods[currentFood].cholesterol.length==0){foods[currentFood].cholesterol='0'}
+  if(foods[currentFood].fiber.length==0){foods[currentFood].fiber='0'}
+  }
   function pickMacro(){
     let mx=mouse_x;
     let my=mouse_y;
     let spacing = 20;
     if(mx>160-(foods[currentFood].description.length*30)/2 && mx<160 + (foods[currentFood].description.length*30)/2 && my>spacing*2.5-15 && my<spacing*2.5+15){
       edit=0;
+      no_data();
     }
-if(mx>160-(foods[currentFood].kcal.toString().length*30)/2 && mx<160 + (foods[currentFood].kcal.toString().length*30)/2 && my>spacing*6.25-15 && my<spacing*6.25+15){
+    if(mx>160-(foods[currentFood].kcal.toString().length*30)/2 && mx<160 + (foods[currentFood].kcal.toString().length*30)/2 && my>spacing*6.25-15 && my<spacing*6.25+15){
       edit=1;
+      no_data();
     }
- if(mx>160-(foods[currentFood].protein.toString().length*30)/2 && mx<160 + (foods[currentFood].protein.toString().length*30)/2 && my>spacing*9.75-15 && my<spacing*9.75+15){
+    if(mx>160-(foods[currentFood].protein.toString().length*30)/2 && mx<160 + (foods[currentFood].protein.toString().length*30)/2 && my>spacing*9.75-15 && my<spacing*9.75+15){
       edit=2;
-    }   
-     if(mx>160-(foods[currentFood].cholesterol.toString().length*30)/2 && mx<160 + (foods[currentFood].cholesterol.toString().length*30)/2 && my>spacing*13.55-15 && my<spacing*13.55+15){
+      no_data();
+    }
+    if(mx>160-(foods[currentFood].cholesterol.toString().length*30)/2 && mx<160 + (foods[currentFood].cholesterol.toString().length*30)/2 && my>spacing*13.55-15 && my<spacing*13.55+15){
       edit=3;
-    }  
-         if(mx>160-(foods[currentFood].fiber.toString().length*30)/2 && mx<160 + (foods[currentFood].fiber.toString().length*30)/2 && my>spacing*17.25-15 && my<spacing*17.25+15){
+      no_data();
+    }
+    if(mx>160-(foods[currentFood].fiber.toString().length*30)/2 && mx<160 + (foods[currentFood].fiber.toString().length*30)/2 && my>spacing*17.25-15 && my<spacing*17.25+15){
       edit=4;
-    } 
+      no_data();
+    }
   }
-  function addMacros(mx,my){
-    //inside(px, py, rx, ry, width, height, angle, originX, originY)
-    //draw_rectangle(x, y, w, h,outline,rot,ox,oy)
-    
-    if( inside(mx,my,160, spacing*2.5, foods[currentFood].description.length*30, 30,0,(foods[currentFood].description.length*30)/2,15)){
-      edit=0;
-    }
-    if( inside(mx,my,160, spacing*6.25 , foods[currentFood].kcal.toString().length*30, 30,0,(foods[currentFood].kcal.toString().length*30)/2,15)){
-      edit=1;
-    }
-    if( inside(mx,my,160, spacing*9.75, foods[currentFood].protein.toString().length*30, 30,0,(foods[currentFood].protein.toString().length*30)/2,15)){
-      edit=2;
-    }
-    if(  inside(mx,my,160, spacing*13.5, foods[currentFood].cholesterol.toString().length*30, 30,0,(foods[currentFood].cholesterol.toString().length*30)/2,15)){
-      edit=3;
-    }
-    if( inside(mx,my,160, spacing*17.25, foods[currentFood].fiber.toString().length*30, 30,0,(foods[currentFood].fiber.toString().length*30)/2,15)){
-      edit=4;
-    }
-    
-    
-    
-  }
+  
   function draw(){
     draw_Gui()
     if(mode=='input'){
@@ -224,21 +218,38 @@ if(mx>160-(foods[currentFood].kcal.toString().length*30)/2 && mx<160 + (foods[cu
     draw_set_linewidth(4)
     //draw_rectangle(0, 675-224*1.25, 320, 64,1,0,0,0)
     //words
-    draw_centered_text(160, 675-224*1.25+32, words, 48, 700)
+    // draw_centered_text(160, 675-224*1.25+32, words, 48, 700)
   }
   function check_vkeys(){
+  if (edit==0){words=foods[currentFood].description}
+  if (edit==1){words=foods[currentFood].kcal}
+  if (edit==2){words=foods[currentFood].protein}
+  if (edit==3){words=foods[currentFood].cholesterol}
+  if (edit==4){words=foods[currentFood].fiber}
     for(let i = 0;i<kb.length;i++){
       if(inside(mouse_x, mouse_y, kb[i].x, kb[i].y, kb[i].w, kb[i].h, 0, 0, 0)){
         if(kb[i].label!='space' && kb[i].label!='del' && kb[i].label!='ok' && kb[i].label!='back'){
+        if(kb[i].label!='1' && kb[i].label!='2'&& kb[i].label!='3'&& kb[i].label!='4'&& kb[i].label!='5'&& kb[i].label!='6'&& kb[i].label!='7'&& kb[i].label!='8'&& kb[i].label!='9'&& kb[i].label!='0'){return}
           words+=kb[i].label
           
         }else{
         if(kb[i].label=='space'){words+=' '}
-        if(kb[i].label=='del'){words = words.substring(0, words.length - 1)}
+          if(kb[i].label=='del'){
+            
+            words = words.substring(0, words.length - 1)
+            no_data();
+            
+          }
         if(kb[i].label=='back'){mode='idle'}
         }
       }
     }
+  if (edit==0){foods[currentFood].description=words}
+  if (edit==1){foods[currentFood].kcal=words}
+  if (edit==2){foods[currentFood].protein=words}
+  if (edit==3){foods[currentFood].cholesterol=words}
+  if (edit==4){foods[currentFood].fiber=words}
+    localStorage.setItem("full_menu", JSON.stringify(foods));
     // check macro text boxes for selection
     pickMacro();
   }
