@@ -83,7 +83,7 @@ var left= {x:0, y:600, w:120, h:75};
 var center= {x:120, y:600, w:80, h:75};
 var right= {x:200, y:600, w:120, h:75};
   var mode='idle'
-  var edit = 0;
+  var edit = 3;
   var words=''
   var kb=[]
   var klist=['1','2','3','4','5','6','7','8','9','0','q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l',' ',' ','z','x','c','v','b','n','m','del','back','space','ok']
@@ -157,10 +157,30 @@ var right= {x:200, y:600, w:120, h:75};
       }
     }
   }
+  function pickMacro(){
+    let mx=mouse_x;
+    let my=mouse_y;
+    let spacing = 20;
+    if(mx>160-(foods[currentFood].description.length*30)/2 && mx<160 + (foods[currentFood].description.length*30)/2 && my>spacing*2.5-15 && my<spacing*2.5+15){
+      edit=0;
+    }
+if(mx>160-(foods[currentFood].kcal.toString().length*30)/2 && mx<160 + (foods[currentFood].kcal.toString().length*30)/2 && my>spacing*6.25-15 && my<spacing*6.25+15){
+      edit=1;
+    }
+ if(mx>160-(foods[currentFood].protein.toString().length*30)/2 && mx<160 + (foods[currentFood].protein.toString().length*30)/2 && my>spacing*9.75-15 && my<spacing*9.75+15){
+      edit=2;
+    }   
+     if(mx>160-(foods[currentFood].cholesterol.toString().length*30)/2 && mx<160 + (foods[currentFood].cholesterol.toString().length*30)/2 && my>spacing*13.55-15 && my<spacing*13.55+15){
+      edit=3;
+    }  
+         if(mx>160-(foods[currentFood].fiber.toString().length*30)/2 && mx<160 + (foods[currentFood].fiber.toString().length*30)/2 && my>spacing*17.25-15 && my<spacing*17.25+15){
+      edit=4;
+    } 
+  }
   function addMacros(mx,my){
     //inside(px, py, rx, ry, width, height, angle, originX, originY)
     //draw_rectangle(x, y, w, h,outline,rot,ox,oy)
-    let spacing=20
+    
     if( inside(mx,my,160, spacing*2.5, foods[currentFood].description.length*30, 30,0,(foods[currentFood].description.length*30)/2,15)){
       edit=0;
     }
@@ -220,7 +240,7 @@ var right= {x:200, y:600, w:120, h:75};
       }
     }
     // check macro text boxes for selection
-    addMacros(mouse_x,mouse_y);
+    pickMacro();
   }
   function draw_Gui(){
     //draw_rectangle(x, y, w, h,outline,rot,ox,oy)
