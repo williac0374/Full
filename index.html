@@ -251,6 +251,7 @@ var right= {x:200, y:600, w:120, h:75};
     */
   }
   function addFood(){
+    openChatGPT();
     mode='input'
     /*
     let description = prompt("enter food description","")
@@ -313,6 +314,24 @@ var right= {x:200, y:600, w:120, h:75};
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }
+  /**
+ * Opens ChatGPT in a new browser tab with an optional prompt.
+ * @param {string} prompt - Optional text to pre-fill in ChatGPT (if supported by URL parameters)
+ */
+function openChatGPT(prompt = '') {
+  // Base ChatGPT URL
+  let url = 'https://chat.openai.com/';
+
+  // Optional: if you want to pre-fill a prompt (may require OpenAI plugin/API support)
+  // ChatGPT web app currently does not support URL-based prompts, so prompt is ignored in practice.
+  // You could later integrate the API for automatic prompt injection.
+
+  // Open in a new tab
+  window.open(url, '_blank');
+}
+
+// Example usage:
+//openChatGPT(); // Opens ChatGPT in a new tab
   </script>
   <script type='text/javascript' src='engine.js'></script>
   </body>
