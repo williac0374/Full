@@ -30,10 +30,16 @@ canvas {
   background-color: white;
   margin: 0;
   padding: 0;
-  height: 100vh;
-  width: 100vw;
+  
 }
-
+/* Styles that apply only to devices without a hover capability (i.e., touch-only devices like most phones/tablets) */
+@media (hover: none) and (pointer: coarse) {
+  /* Mobile-specific styles for touch interaction */
+  canvas {
+    height: 100vh;
+    width: 100vw;
+  }
+}
 </style>
 </head>
 <body>
@@ -77,6 +83,7 @@ var left= {x:0, y:600, w:120, h:75};
 var center= {x:120, y:600, w:80, h:75};
 var right= {x:200, y:600, w:120, h:75};
   var mode='idle'
+  var edit = 0;
   var words=''
   var kb=[]
   var klist=['1','2','3','4','5','6','7','8','9','0','q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l',' ',' ','z','x','c','v','b','n','m','del','back','space','ok']
@@ -118,12 +125,8 @@ var right= {x:200, y:600, w:120, h:75};
     
   }
   function loop(){
-    if(keyboard_check(vk_up)){
-      kcal+=20;
-    }
-    if(keyboard_check(vk_down)){
-      kcal-=20;
-    if(kcal<0){kcal=0}
+    if(keyboard_check(vk_a)){
+      addFood();
     }
     if(mouse_down){
       if(mode!='input'){
@@ -154,7 +157,27 @@ var right= {x:200, y:600, w:120, h:75};
       }
     }
   }
-  function guiLogic(input){
+  function addMacros(mx,my){
+    //inside(px, py, rx, ry, width, height, angle, originX, originY)
+    //draw_rectangle(x, y, w, h,outline,rot,ox,oy)
+    let spacing=20
+    if( inside(mx,my,160, spacing*2.5, foods[currentFood].description.length*30, 30,0,(foods[currentFood].description.length*30)/2,15)){
+      edit=0;
+    }
+    if( inside(mx,my,160, spacing*6.25 , foods[currentFood].kcal.toString().length*30, 30,0,(foods[currentFood].kcal.toString().length*30)/2,15)){
+      edit=1;
+    }
+    if( inside(mx,my,160, spacing*9.75, foods[currentFood].protein.toString().length*30, 30,0,(foods[currentFood].protein.toString().length*30)/2,15)){
+      edit=2;
+    }
+    if(  inside(mx,my,160, spacing*13.5, foods[currentFood].cholesterol.toString().length*30, 30,0,(foods[currentFood].cholesterol.toString().length*30)/2,15)){
+      edit=3;
+    }
+    if( inside(mx,my,160, spacing*17.25, foods[currentFood].fiber.toString().length*30, 30,0,(foods[currentFood].fiber.toString().length*30)/2,15)){
+      edit=4;
+    }
+    
+    
     
   }
   function draw(){
@@ -196,6 +219,8 @@ var right= {x:200, y:600, w:120, h:75};
         }
       }
     }
+    // check macro text boxes for selection
+    addMacros(mouse_x,mouse_y);
   }
   function draw_Gui(){
     //draw_rectangle(x, y, w, h,outline,rot,ox,oy)
@@ -225,22 +250,33 @@ var right= {x:200, y:600, w:120, h:75};
       draw_centered_text(160, 160, fiber+" / "+FIBER, 30, 700)
     }
     if(mode=='input'){
+      let spacing=20
+      draw_set_color(0,0,0);
       draw_set_linewidth(2)
-      draw_centered_text(160, 40, 'FOOD', 30, 700)
-      draw_centered_text(160, 80, foods[currentFood].description, 30, 700)
-      draw_rectangle(160, 80, foods[currentFood].description.length*30, 30,1,0,(foods[currentFood].description.length*30)/2,15)
-      draw_centered_text(160, 120, 'KCALS', 30, 700)
-      draw_centered_text(160, 160, foods[currentFood].kcal, 30, 700)
-      draw_rectangle(160, 160, foods[currentFood].kcal.toString().length*30, 30,1,0,(foods[currentFood].kcal.toString().length*30)/2,15)
-      draw_centered_text(160, 200, 'PROTEIN', 30, 700)
-      draw_centered_text(160, 240, foods[currentFood].protein, 30, 700)
-      draw_rectangle(160, 240, foods[currentFood].protein.toString().length*30, 30,1,0,(foods[currentFood].protein.toString().length*30)/2,15)
-      draw_centered_text(160, 280, 'CHOLESTEROL', 30, 700)
-      draw_centered_text(160, 320, foods[currentFood].cholesterol, 30, 700)
-      draw_rectangle(160, 320, foods[currentFood].cholesterol.toString().length*30, 30,1,0,(foods[currentFood].cholesterol.toString().length*30)/2,15)
-      draw_centered_text(160, 360, 'FIBER', 30, 700)
-      draw_centered_text(160, 400, foods[currentFood].fiber, 30, 700)
-      draw_rectangle(160, 400, foods[currentFood].fiber.toString().length*30, 30,1,0,(foods[currentFood].fiber.toString().length*30)/2,15)
+      draw_centered_text(160, spacing, 'FOOD', 30, 700)
+    if(edit==0){draw_set_color(255,0,0);}
+      draw_centered_text(160, spacing*2.5, foods[currentFood].description, 30, 700)
+      draw_rectangle(160, spacing*2.5, foods[currentFood].description.length*30, 30,1,0,(foods[currentFood].description.length*30)/2,15)
+      draw_set_color(0,0,0);
+      draw_centered_text(160, spacing*4.5, 'KCALS', 30, 700)
+    if(edit==1){draw_set_color(255,0,0);}
+      draw_centered_text(160, spacing*6.25, foods[currentFood].kcal, 30, 700)
+      draw_rectangle(160, spacing*6.25 , foods[currentFood].kcal.toString().length*30, 30,1,0,(foods[currentFood].kcal.toString().length*30)/2,15)
+      draw_set_color(0,0,0);
+      draw_centered_text(160, spacing*8.15, 'PROTEIN', 30, 700)
+    if(edit==2){draw_set_color(255,0,0);}
+      draw_centered_text(160, spacing*9.75, foods[currentFood].protein, 30, 700)
+      draw_rectangle(160, spacing*9.75, foods[currentFood].protein.toString().length*30, 30,1,0,(foods[currentFood].protein.toString().length*30)/2,15)
+      draw_set_color(0,0,0);
+      draw_centered_text(160, spacing*11.75, 'CHOLESTEROL', 30, 700)
+    if(edit==3){draw_set_color(255,0,0);}
+      draw_centered_text(160, spacing*13.5, foods[currentFood].cholesterol, 30, 700)
+      draw_rectangle(160, spacing*13.5, foods[currentFood].cholesterol.toString().length*30, 30,1,0,(foods[currentFood].cholesterol.toString().length*30)/2,15)
+      draw_set_color(0,0,0);
+      draw_centered_text(160, spacing*15.5, 'FIBER', 30, 700)
+    if(edit==4){draw_set_color(255,0,0);}
+      draw_centered_text(160, spacing*17.25, foods[currentFood].fiber, 30, 700)
+      draw_rectangle(160, spacing*17.25, foods[currentFood].fiber.toString().length*30, 30,1,0,(foods[currentFood].fiber.toString().length*30)/2,15)
     }
     /*
     draw_centered_text(160, 320, foods[currentFood].description, 20, 700)
@@ -251,7 +287,6 @@ var right= {x:200, y:600, w:120, h:75};
     */
   }
   function addFood(){
-   // openChatGPT();
     mode='input'
     /*
     let description = prompt("enter food description","")
@@ -314,24 +349,6 @@ var right= {x:200, y:600, w:120, h:75};
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }
-  /**
- * Opens ChatGPT in a new browser tab with an optional prompt.
- * @param {string} prompt - Optional text to pre-fill in ChatGPT (if supported by URL parameters)
- */
-function openChatGPT(prompt = '') {
-  // Base ChatGPT URL
-  let url = 'https://chat.openai.com/';
-
-  // Optional: if you want to pre-fill a prompt (may require OpenAI plugin/API support)
-  // ChatGPT web app currently does not support URL-based prompts, so prompt is ignored in practice.
-  // You could later integrate the API for automatic prompt injection.
-
-  // Open in a new tab
-  window.open(url, '_blank');
-}
-
-// Example usage:
-//openChatGPT(); // Opens ChatGPT in a new tab
   </script>
   <script type='text/javascript' src='engine.js'></script>
   </body>
