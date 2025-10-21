@@ -86,23 +86,32 @@ var right= {x:200, y:600, w:120, h:75};
   var edit = 3;
   var words=''
   var kb=[]
-  var klist=['1','2','3','4','5','6','7','8','9','0','q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l',' ',' ','z','x','c','v','b','n','m','del','back','space','ok']
+  var klist=['<---','+log','+menu','--->','1','2','3','4','5','6','7','8','9','0','q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l',' ',' ','z','x','c','v','b','n','m','del','back','space','ok']
   var size=32
-  var y = 675-160*1.25
+  var y = 675-6*size*1.25
   var x=0
   var vkey=null
   for(let i = 0; i <klist.length;i++){
     
-    if(klist[i]!='del'&&klist[i]!='back'&&klist[i]!='space'&&klist[i]!='ok'){
+    if(klist[i]!='del'&&klist[i]!='back'&&klist[i]!='space'&&klist[i]!='ok'&&klist[i]!='<---'&&klist[i]!='+log'&&klist[i]!='+menu'&&klist[i]!='--->'){
     vkey = {label:klist[i],x:x,y:y,w:size,h:size*1.25}
       x+=size;
     }else{
-      if(klist[i]!='del'&&klist[i]!='back'&&klist[i]!='ok'){
+      if(klist[i]!='del'&&klist[i]!='back'&&klist[i]!='ok'&&klist[i]!='<---'&&klist[i]!='--->'&&klist[i]!='+log'&&klist[i]!='+menu'){
+        //space bar
       vkey = {label:klist[i],x:x,y:y,w:size*6,h:size*1.25}
         x+=size*6;
       }else{
-      vkey = {label:klist[i],x:x,y:y,w:size*2,h:size*1.25}
-        x+=size*2
+        if(klist[i]=='+log'||klist[i]=='+menu'){
+          vkey = {label:klist[i],x:x,y:y,w:size*3,h:size*1.25}
+          x+=size*3
+        } else{
+          
+          
+        vkey = {label:klist[i],x:x,y:y,w:size*2,h:size*1.25}
+          x+=size*2
+          
+        }
       }
     }
     if(x>=320){
@@ -117,7 +126,7 @@ var right= {x:200, y:600, w:120, h:75};
   if(localStorage.getItem("full_menu")!=null){
     foods = JSON.parse(localStorage.getItem("full_menu"))
   }else{
-  let food = {description:"apple",kcal:'120',protein:'1',cholesterol:'0',fiber:'10'}
+  let food = {description:"food"+currentFood.toString(),kcal:'0',protein:'0',cholesterol:'0',fiber:'0'}
     foods.push(food)
     localStorage.setItem("full_menu", JSON.stringify(foods));
   }
@@ -127,7 +136,7 @@ var right= {x:200, y:600, w:120, h:75};
   function loop(){
     if(keyboard_check(vk_r)){
       foods = [];
-    let food = {description:"apple",kcal:'120',protein:'1',cholesterol:'0',fiber:'10'}
+    let food = {description:"food"+currentFood.toString(),kcal:'0',protein:'0',cholesterol:'0',fiber:'0'}
       foods.push(food)
       localStorage.setItem("full_menu", JSON.stringify(foods));
     }
@@ -204,8 +213,8 @@ var right= {x:200, y:600, w:120, h:75};
     
   }
   function draw_vkeys(){
-    draw_set_color(59,59,59);
-    draw_rectangle(0, 675-160*1.25, 320, 160*1.25,0,0,0,0)
+    draw_set_color(59,59,59);//kb[0].y   675-6*size*1.25
+    draw_rectangle(0, kb[0].y, 320, 6*size*1.25,0,0,0,0)
   //{label:klist[i],x:x,y:y,w:size*2,h:size}
     for(let i = 0; i < kb.length; i ++){
       draw_set_color(80,80,80);
@@ -228,8 +237,8 @@ var right= {x:200, y:600, w:120, h:75};
   if (edit==4){words=foods[currentFood].fiber}
     for(let i = 0;i<kb.length;i++){
       if(inside(mouse_x, mouse_y, kb[i].x, kb[i].y, kb[i].w, kb[i].h, 0, 0, 0)){
-        if(kb[i].label!='space' && kb[i].label!='del' && kb[i].label!='ok' && kb[i].label!='back'){
-        if(kb[i].label!='1' && kb[i].label!='2'&& kb[i].label!='3'&& kb[i].label!='4'&& kb[i].label!='5'&& kb[i].label!='6'&& kb[i].label!='7'&& kb[i].label!='8'&& kb[i].label!='9'&& kb[i].label!='0'){return}
+        if(kb[i].label!='space' && kb[i].label!='del' && kb[i].label!='ok' && kb[i].label!='back'&& kb[i].label!='<---'&& kb[i].label!='--->'&& kb[i].label!='add2log'){
+        if(edit>0 && kb[i].label!='1' && kb[i].label!='2'&& kb[i].label!='3'&& kb[i].label!='4'&& kb[i].label!='5'&& kb[i].label!='6'&& kb[i].label!='7'&& kb[i].label!='8'&& kb[i].label!='9'&& kb[i].label!='0'){return}
           words+=kb[i].label
           
         }else{
