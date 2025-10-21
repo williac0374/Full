@@ -86,7 +86,7 @@ var right= {x:200, y:600, w:120, h:75};
   var edit = 3;
   var words=''
   var kb=[]
-  var klist=['<---','+log','+menu','--->','1','2','3','4','5','6','7','8','9','0','q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l',' ',' ','z','x','c','v','b','n','m','del','back','space','ok']
+  var klist=['<---','+log','+menu','--->','1','2','3','4','5','6','7','8','9','0','q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','R',' ','z','x','c','v','b','n','m','del','back','space','ok']
   var size=32
   var y = 675-6*size*1.25
   var x=0
@@ -133,6 +133,12 @@ var right= {x:200, y:600, w:120, h:75};
   function start(){
     
   }
+  function reFeed(){
+foods = [];
+    let food = {description:"food"+currentFood.toString(),kcal:'0',protein:'0',cholesterol:'0',fiber:'0'}
+      foods.push(food)
+      localStorage.setItem("full_menu", JSON.stringify(foods));
+     }
   function loop(){
     if(keyboard_check(vk_r)){
       foods = [];
