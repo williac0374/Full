@@ -243,12 +243,13 @@ foods = [];
   if (edit==4){words=foods[currentFood].fiber}
     for(let i = 0;i<kb.length;i++){
       if(inside(mouse_x, mouse_y, kb[i].x, kb[i].y, kb[i].w, kb[i].h, 0, 0, 0)){
-        if(kb[i].label!='space' && kb[i].label!='del' && kb[i].label!='ok' && kb[i].label!='back'&& kb[i].label!='<---'&& kb[i].label!='--->'&& kb[i].label!='add2log'){
+        if(kb[i].label!='space' && kb[i].label!='del' && kb[i].label!='R' && kb[i].label!='ok' && kb[i].label!='back'&& kb[i].label!='<---'&& kb[i].label!='--->'&& kb[i].label!='add2log'){
         if(edit>0 && kb[i].label!='1' && kb[i].label!='2'&& kb[i].label!='3'&& kb[i].label!='4'&& kb[i].label!='5'&& kb[i].label!='6'&& kb[i].label!='7'&& kb[i].label!='8'&& kb[i].label!='9'&& kb[i].label!='0'){return}
           words+=kb[i].label
           
         }else{
         if(kb[i].label=='space'){words+=' '}
+          if(kb[i].label=='R'){reFeed()}
           if(kb[i].label=='del'){
             
             words = words.substring(0, words.length - 1)
